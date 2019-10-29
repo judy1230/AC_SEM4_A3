@@ -35,3 +35,5 @@ app.listen(port, () => {
 })
 //把 passport 傳入routes
 require('./routes')(app, passport)
+
+app.use('/upload', express.static(__dirname + '/upload'))
