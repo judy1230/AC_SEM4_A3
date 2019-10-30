@@ -132,9 +132,12 @@ const adminController = {
 			})
 	},
 	editUsers: (req, res) => {
-		return User.findAll()
-			.sort({id:'asc'})
-			.exec(users => {
+		return User.findAll({
+			order: [
+				['id', 'ASC'],
+			],
+		})
+			.then(users => {
 			return res.render('admin/users', {
 				users: users,
 				setRole: false
