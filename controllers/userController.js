@@ -36,7 +36,8 @@ let userController = {
 	},
 	signIn: (req, res) => {
 		req.flash('success_msg', '成功登入!')
-		res.redirect('/restaurants')
+		//res.redirect('/restaurants')
+		res.redirect('/')
 	},
 	logout: (req, res) => {
 		req.flash('success_msg', '成功登出!')

@@ -1,5 +1,6 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const fs = require('fs')
 
 const adminController = {
@@ -13,6 +14,7 @@ const adminController = {
 		})
 	},
 	getRestaurant: (req, res) => {
+		console.log('res req.params.id', req.params.id)
 		return Restaurant.findByPk(req.params.id).then(restaurant => {
 			return res.render('admin/restaurant', {
 				restaurant: restaurant
@@ -28,19 +30,21 @@ const adminController = {
 			return res.redirect('back')
 		}
 
-		const { file } = req
+		const {
+			file
+		} = req
 		if (file) {
 			fs.readFile(file.path, (err, data) => {
 				if (err) console.log('Error', err)
 				fs.writeFile(`upload/${file.originalname}`, data, () => {
 					return Restaurant.create({
-						name: req.body.name,
-						tel: req.body.tel,
-						address: req.body.address,
-						opening_hours: req.opening_hours,
-						description: req.body.description,
-						image: file ? `/upload/${file.originalname}` : null
-					})
+							name: req.body.name,
+							tel: req.body.tel,
+							address: req.body.address,
+							opening_hours: req.opening_hours,
+							description: req.body.description,
+							image: file ? `/upload/${file.originalname}` : null
+						})
 						.then((restaurant) => {
 							req.flash('success_msg', 'restaurant was successfully created')
 							res.redirect('/admin/restaurants')
@@ -48,24 +52,26 @@ const adminController = {
 				})
 			})
 		} else {
-				return Restaurant.create({
-						name: req.body.name,
-						tel: req.body.tel,
-						address: req.body.address,
-						opening_hours: req.opening_hours,
-						description: req.body.description,
-						image: null
-					})
-					.then((restaurant) => {
-						req.flash('success_msg', 'restaurant was successfully created')
-						res.redirect('/admin/restaurants')
-					})
+			return Restaurant.create({
+					name: req.body.name,
+					tel: req.body.tel,
+					address: req.body.address,
+					opening_hours: req.opening_hours,
+					description: req.body.description,
+					image: null
+				})
+				.then((restaurant) => {
+					req.flash('success_msg', 'restaurant was successfully created')
+					res.redirect('/admin/restaurants')
+				})
 		}
 
 	},
 	editRestaurant: (req, res) => {
 		return Restaurant.findByPk(req.params.id).then(restaurant => {
-			return res.render('admin/create', { restaurant: restaurant})
+			return res.render('admin/create', {
+				restaurant: restaurant
+			})
 		})
 	},
 	putRestaurant: (req, res) => {
@@ -73,7 +79,9 @@ const adminController = {
 			req.flash('error_msg', "name didn't exist")
 			return res.redirect('back')
 		}
-		const { file } = req
+		const {
+			file
+		} = req
 		if (file) {
 			fs.readFile(file.path, (err, data) => {
 				if (err) console.log('Error', err)
@@ -81,13 +89,13 @@ const adminController = {
 					return Restaurant.findByPk(req.params.id)
 						.then((restaurant) => {
 							restaurant.update({
-								name: req.body.name,
-								tel: req.body.tel,
-								address: req.body.address,
-								opening_hours: req.opening_hours,
-								description: req.body.description,
-								image: file ? `/upload/${file.originalname}`: restaurant.image
-							})
+									name: req.body.name,
+									tel: req.body.tel,
+									address: req.body.address,
+									opening_hours: req.opening_hours,
+									description: req.body.description,
+									image: file ? `/upload/${file.originalname}` : restaurant.image
+								})
 								.then((restaurant) => {
 									req.flash('success_msg', 'restaurant was successfully to update')
 									res.redirect('/admin/restaurants')
@@ -103,7 +111,7 @@ const adminController = {
 							tel: req.body.tel,
 							address: req.body.address,
 							opening_hours: req.opening_hours,
-						  description: req.body.description,
+							description: req.body.description,
 							image: restaurant.image
 						})
 						.then((restaurant) => {
@@ -122,6 +130,27 @@ const adminController = {
 						res.redirect('/admin/restaurants')
 					})
 			})
+	},
+	editUsers: (req, res) => {
+		return User.findAll().then(users => {
+			return res.render('admin/users', {
+				users: users,
+				setRole: false
+			})
+
+		})
+	},
+	putUsers: (req, res) => {
+		return User.findByPk(req.params.id).then(user => {
+			user.update({
+				isAdmin: !user.isAdmin
+			})
+			let Role = 'Admin'
+			if (!user.isAdmin) {Role = 'User'}
+			req.flash('success_msg', `${user.name} is successfully set as ${Role}`)
+			return res.redirect('/admin/users')
+		})
 	}
+
 }
 module.exports = adminController

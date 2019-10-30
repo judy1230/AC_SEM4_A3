@@ -11,18 +11,21 @@ module.exports = (app, passport) => {
 		}
 		res.redirect('/signin')
 	}
-	const authenticatedAdmin = (req, res, next) => {
-		if (req.isAuthenticated()) {
-			if (req.user.isAdmin) { return next() }
-			return res.redirect('/')
-		}
-		res.redirect('/signin')
+		const authenticatedAdmin = (req, res, next) => {
+			if (req.isAuthenticated()) {
+				if (req.user.isAdmin) {	return next()}
+				return res.redirect('/restaurants')
+			}
+			res.redirect('/signin')
 	}
 	//get in login page
-	app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
+	app.get('/', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
 	app.get('/restaurants', authenticated, resController.getRestaurants)
 	//get in admin
-	app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
+	app.get('/admin', authenticated, (req, res) => res.render('admin/config'))
+	//admin config
+	app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
+	app.get('/admin/setUser/:id', authenticatedAdmin, adminController.putUsers)
 	app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 	app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
 	app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
@@ -30,12 +33,15 @@ module.exports = (app, passport) => {
 	app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
 	app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
 	app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
-	//users login
+	//users sign up
 	app.get('/signup', userController.signUpPage)
 	app.post('/signup', userController.signUp)
+	//users sing in
 	app.get('/signin', userController.signInPage)
 	app.post('/signin', passport.authenticate('local', {
 		failureRedirect: '/signin',
-		failureFlash: true}), userController.signIn)
+		failureFlash: true
+	}), userController.signIn)
+	//users logout
 	app.get('/logout', userController.logout)
 }
