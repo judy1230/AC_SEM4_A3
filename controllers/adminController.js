@@ -133,6 +133,7 @@ const adminController = {
 	},
 	editUsers: (req, res) => {
 		return User.findAll({
+			//bug0-confusion sort after latest update
 			order: [
 				['id', 'ASC'],
 			],
