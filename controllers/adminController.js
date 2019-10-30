@@ -7,7 +7,10 @@ const fs = require('fs')
 
 const adminController = {
 	getRestaurants: (req, res) => {
-		return Restaurant.findAll().then(restaurants => {
+		return Restaurant.findAll({
+			order: [
+				['id', 'ASC'],
+			],}).then(restaurants => {
 			return res.render('admin/restaurants', {
 				restaurants: restaurants,
 				user: req.user,
