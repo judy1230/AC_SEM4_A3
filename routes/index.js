@@ -19,10 +19,12 @@ module.exports = (app, passport) => {
 			res.redirect('/signin')
 	}
 	//get in login page
-	app.get('/', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
+	//app.get('/', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
+	app.get('/', authenticatedAdmin, adminController.getRestaurants)
 	app.get('/restaurants', authenticated, resController.getRestaurants)
 	//get in admin
 	app.get('/admin', authenticated, (req, res) => res.render('admin/config'))
+
 	//admin config
 	app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
 	app.get('/admin/setUser/:id', authenticatedAdmin, adminController.putUsers)
