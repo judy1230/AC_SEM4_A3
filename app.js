@@ -9,7 +9,11 @@ const passport = require('./config/passport.js')
 const methodOverride = require('method-override')
 const port = process.env.PORT || 3000
 //setup handlebars
-app.engine('handlebars', handlebars({defaultLayout: 'main' }))
+app.engine('handlebars', handlebars({
+	defaultLayout: 'main',
+	helpers: require('./config/handlebars-helpers.js')
+}))
+
 app.set('view engine', 'handlebars')
 //setup bodyParser
 app.use(bodyParser.urlencoded({ extended: true }))
