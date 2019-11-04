@@ -25,11 +25,12 @@ module.exports = (app, passport) => {
 	app.get('/restaurants', authenticated, resController.getRestaurants)
 	//get in admin
 	app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
-	app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
+	//app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 
 	//admin config
 	//categories
 	app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
+	app.post('/admin/categories', authenticatedAdmin, categoryController.postCategories)
 
 	//users
 	app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
