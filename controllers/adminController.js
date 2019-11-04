@@ -31,7 +31,11 @@ const adminController = {
 		})
 	},
 	createRestaurant: (req, res) => {
-		return res.render('admin/create')
+		Category.findAll().then(categories => {
+			return res.render('admin/create', {
+				categories: categories
+			})
+		})
 	},
 	postRestaurant: (req, res) => {
 		if (!req.body.name) {
@@ -79,7 +83,7 @@ const adminController = {
 					address: req.body.address,
 					opening_hours: req.opening_hours,
 					description: req.body.description,
-					image: null
+				image: null
 				})
 				.then((restaurant) => {
 					req.flash('success_msg', 'restaurant was successfully created')
@@ -89,9 +93,13 @@ const adminController = {
 
 	},
 	editRestaurant: (req, res) => {
-		return Restaurant.findByPk(req.params.id).then(restaurant => {
-			return res.render('admin/create', {
-				restaurant: restaurant
+		Category.findAll().then(categories => {
+			return Restaurant.findByPk(req.params.id)
+				.then(restaurant => {
+				return res.render('admin/create', {
+					categories: categories,
+					restaurant: restaurant
+				})
 			})
 		})
 	},
