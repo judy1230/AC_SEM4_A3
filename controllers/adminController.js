@@ -165,11 +165,7 @@ const adminController = {
 			user.update({
 				isAdmin: !user.isAdmin
 			})
-<<<<<<< HEAD
 			user.isAdmin ? Role = 'Admin' : Role ='User'
-=======
-	    user.isAdmin ? Role='Admin' : Role='User'
->>>>>>> 0b6264ffff1db9cc823a587f5f690cdf4ceea971
 			req.flash('success_msg', `${user.name} is successfully set as ${Role}`)
 			return res.redirect('/admin/users')
 		})
