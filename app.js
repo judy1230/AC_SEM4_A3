@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 app.use(methodOverride('_method'))
 //listen to port:3000
 app.listen(port, () => {
-	db.sequelize.sync()
+	//db.sequelize.sync()
 	console.log(`Example app listening on port ${port}!`)
 })
 //把 passport 傳入routes

@@ -110,6 +110,7 @@ const adminController = {
 							CategoryId: req.body.categoryId
 						})
 							.then((restaurant) => {
+								console.log('restaurant', restaurant)
 								req.flash('success_messages', 'restaurant was successfully to update')
 								res.redirect('/admin/restaurants')
 							})
@@ -159,19 +160,6 @@ const adminController = {
 
 		})
 	},
-	// editUsers: (req, res) => {
-	// 	console.log('req.params.id', req.params.id)
-	// 	return User.findByPk({
-	// 		id: req.params.id
-	// 	})
-	// 		.then(user => {
-	// 		  return  res.render('admin/users/:id/edit', {
-	// 				user: user,
-	// 				password: password,
-	// 				image: image
-	// 			})
-	// 		})
-	// },
 	putUsers: (req, res) => {
 		return User.findByPk(req.params.id).then(user => {
 			user.update({
