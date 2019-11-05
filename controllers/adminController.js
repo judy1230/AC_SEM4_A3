@@ -60,23 +60,7 @@ const adminController = {
 					return res.redirect('/admin/restaurants')
 				})
 			})
-			// fs.readFile(file.path, (err, data) => {
-			// 	if (err) console.log('Error', err)
-			// 	fs.writeFile(`upload/${file.originalname}`, data, () => {
-			// 		return Restaurant.create({
-			// 				name: req.body.name,
-			// 				tel: req.body.tel,
-			// 				address: req.body.address,
-			// 				opening_hours: req.opening_hours,
-			// 				description: req.body.description,
-			// 				image: file ? `/upload/${file.originalname}` : null
-			// 			})
-			// 			.then((restaurant) => {
-			// 				req.flash('success_msg', 'restaurant was successfully created')
-			// 				res.redirect('/admin/restaurants')
-			// 			})
-			// 	})
-			// })
+
 		} else {
 			return Restaurant.create({
 					name: req.body.name,
@@ -131,26 +115,6 @@ const adminController = {
 							})
 					})
 			})
-			// fs.readFile(file.path, (err, data) => {
-			// 	if (err) console.log('Error', err)
-			// 	fs.writeFile(`upload/${file.originalname}`, data, () => {
-			// 		return Restaurant.findByPk(req.params.id)
-			// 			.then((restaurant) => {
-			// 				restaurant.update({
-			// 						name: req.body.name,
-			// 						tel: req.body.tel,
-			// 						address: req.body.address,
-			// 						opening_hours: req.opening_hours,
-			// 						description: req.body.description,
-			// 						image: file ? `/upload/${file.originalname}` : restaurant.image
-			// 					})
-			// 					.then((restaurant) => {
-			// 						req.flash('success_msg', 'restaurant was successfully to update')
-			// 						res.redirect('/admin/restaurants')
-			// 					})
-			// 			})
-			// 	})
-			// })
 		} else {
 			return Restaurant.findByPk(req.params.id)
 				.then((restaurant) => {
@@ -188,13 +152,26 @@ const adminController = {
 			],
 		})
 			.then(users => {
-			return res.render('admin/users', {
+			return res.render('profile', {
 				users: users,
 				setRole: false
 			})
 
 		})
 	},
+	// editUsers: (req, res) => {
+	// 	console.log('req.params.id', req.params.id)
+	// 	return User.findByPk({
+	// 		id: req.params.id
+	// 	})
+	// 		.then(user => {
+	// 		  return  res.render('admin/users/:id/edit', {
+	// 				user: user,
+	// 				password: password,
+	// 				image: image
+	// 			})
+	// 		})
+	// },
 	putUsers: (req, res) => {
 		return User.findByPk(req.params.id).then(user => {
 			user.update({

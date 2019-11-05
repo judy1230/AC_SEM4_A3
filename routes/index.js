@@ -27,9 +27,14 @@ module.exports = (app, passport) => {
 	app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 	app.post('/comments', authenticated, commentController.postComment)
 	app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
+
+	//user profile
+	app.get('/users/:id', authenticated, userController.getUsers)
+	app.get('/users/:id/edit', authenticated, userController.editUsers)
+	app.put('/users/:id/edit', authenticated, userController.putUsers)
+
 	//get in admin
 	app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
-	//app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 
 	//admin config
 	//categories
@@ -39,9 +44,10 @@ module.exports = (app, passport) => {
 	app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
 	app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 
-	//users
+	//admin manage users
 	app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
 	app.get('/admin/setUser/:id', authenticatedAdmin, adminController.putUsers)
+
 	//restaurants
 	app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 	app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)

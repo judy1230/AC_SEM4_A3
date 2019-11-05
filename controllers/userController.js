@@ -43,6 +43,37 @@ let userController = {
 		req.flash('success_msg', '成功登出!')
 		req.logout()
 		res.redirect('/signin')
+	},
+	getUsers: (req, res) => {
+		console.log('req.params.id', req.params.id)
+		return User.findByPk(req.params.id)
+			.then(user => {
+				return res.render('profile', {
+					user: user
+				})
+			})
+	},
+	editUsers: (req, res) => {
+		console.log('req.params.id', req.params.id)
+		return User.findByPk(req.params.id)
+			.then(user => {
+				console.log('user',user)
+				return res.render('editProfile', {
+					user: user
+				})
+			})
+	},
+	putUsers: (req, res) => {
+		return User.findByPk(req.params.id).then(user => {
+			user.update({
+				name: req.body.name,
+				email: req.body.email,
+				image: req.body.image
+			})
+			req.flash('success_msg', `${user.name} is successfully updated`)
+			return res.redirect('/users/profile')
+		})
 	}
+
 }
 module.exports = userController
