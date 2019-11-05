@@ -61,7 +61,7 @@ let userController = {
 			})
 	},
 	putUser: (req, res) => {
-		console.log(req.body)
+		//console.log(req.body)
 		return User.findByPk(req.params.id).then(user =>{
 			user.update({
 				name: req.body.name,
