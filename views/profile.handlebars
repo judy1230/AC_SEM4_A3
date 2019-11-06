@@ -1,4 +1,4 @@
-<div class="row p-5">
+<div class="row p-2">
 		<div class="col-md-6 text-center">
 			<img class="img-responsive center-block" src="{{user.image}}" style="width: 250px;margin-bottom: 25px;">
 		</div>
@@ -10,6 +10,14 @@
 </div>
 
 
+<blockquote class="blockquote m-auto p-2"></blockquote>
+<p class="">{{user.Comments.length}}個已評論的餐廳</p>
+{{#each user.Comments}}
+	<a href="/restaurants/{{this.Restaurant.id}}"><img class="img-responsive center-block mr-3" src="{{this.Restaurant.image}}" style="width:70px;margin-bottom: 25px;"></a>
+	{{/each}}
+
+</blockquote>
+<hr />
 
 
 

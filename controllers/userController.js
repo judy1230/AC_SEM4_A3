@@ -48,12 +48,25 @@ let userController = {
 		res.redirect('/signin')
 	},
 	getUser: (req, res) => {
-		return User.findByPk(req.params.id)
-			.then((user) => {
-				return res.render('profile', {
-					user: user
-				})
+		// return User.findByPk(req.params.id)
+		// 	.then((user) => {
+		// 		return res.render('profile', {
+		// 			user: user
+		// 		})
+		// 	})
+		User.findByPk(req.params.id, {
+			include: [
+				//Comment,
+				{model: Comment, include:[Restaurant]}
+			]
+		}).then(user => {
+			console.log(user.Comments[0].Restaurant)
+			//console.log(user.dataValues)
+			//console.log(user.dataValues[0].Comments[0])
+			return res.render('profile', {
+				user: user
 			})
+		})
 	},
 	editUser: (req, res) => {
 		return User.findByPk(req.params.id)
