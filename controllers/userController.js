@@ -3,6 +3,7 @@ const db = require('../models')
 const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
+const Favorite = db.Favorite
 
 
 let userController = {
@@ -77,7 +78,29 @@ let userController = {
 				req.flash('success_msg', `${user.name} is successfully updated`)
 				return res.redirect(`/users/${user.id}`)
 		})
-
 	},
+	addFavorite: (req, res) => {
+		console.log('req.params.RestaurantId', req.params)
+		return Favorite.create({
+			UserId: req.user.id,
+			RestaurantId: req.params.restaurantId
+		})
+			.then((restaurant) => {
+				return res.redirect('back')
+			})
+	},
+	removeFavorite: (req, res) => {
+		return Favorite.findOne({
+			where: {
+				UserId: req.user.id,
+				RestaurantId: req.params.restaurantId
+		}})
+			.then((favorite) => {
+				favorite.destroy()
+					.then((restaurant) => {
+						return res.redirect('back')
+					})
+			})
+	}
 }
 module.exports = userController

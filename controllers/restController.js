@@ -3,6 +3,7 @@ const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
 const User = db.User
+const Favorite = db.Favorite
 const pageLimit = 10
 const restController = {
 	getRestaurants: (req, res) => {
@@ -77,9 +78,10 @@ const restController = {
 		return Restaurant.findByPk(req.params.id, {
 			include: [
 				Category,
-				{ model: Comment, include: [Restaurant] }
+				{ model: Comment, include: [Restaurant] },
 			]
 		}).then(restaurant => {
+			console.log('restaurant', restaurant)
 			return res.render('restDashboard', {
 				restaurant: restaurant
 			})
