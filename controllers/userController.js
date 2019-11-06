@@ -4,6 +4,7 @@ const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
+const Like = db.Like
 
 
 let userController = {
@@ -40,7 +41,6 @@ let userController = {
 	},
 	signIn: (req, res) => {
 		req.flash('success_msg', '成功登入!')
-		//res.redirect('/restaurants')
 		res.redirect('/')
 	},
 	logout: (req, res) => {
@@ -68,7 +68,7 @@ let userController = {
 			})
 	},
 	putUser: (req, res) => {
-		//console.log(req.body)
+
 		return User.findByPk(req.params.id).then(user =>{
 			user.update({
 				name: req.body.name,
@@ -80,7 +80,6 @@ let userController = {
 		})
 	},
 	addFavorite: (req, res) => {
-		console.log('req.params.RestaurantId', req.params)
 		return Favorite.create({
 			UserId: req.user.id,
 			RestaurantId: req.params.restaurantId
@@ -101,6 +100,28 @@ let userController = {
 						return res.redirect('back')
 					})
 			})
-	}
+	},
+	addLike: (req, res) => {
+		return Like.create({
+			UserId: req.user.id,
+			RestaurantId: req.params.restaurantId
+		})
+			.then((like) => {
+				return res.redirect('back')
+			})
+	},
+	removeLike: (req, res) => {
+		return Like.findOne({
+			where: {
+				UserId: req.user.id,
+				RestaurantId: req.params.restaurantId
+			}
+		}).then((like) => {
+			like.destroy()
+				.then((restaurant) => {
+					return res.redirect('back')
+				})
+		})
+	},
 }
 module.exports = userController
