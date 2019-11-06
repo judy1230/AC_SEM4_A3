@@ -46,7 +46,10 @@ const restController = {
         { model: Comment, include: [User] }
 			]
 		}).then(restaurant => {
-			//console.log(restaurant.Comments[0].dataValues)
+			totalViewCounts = parseInt(restaurant.viewCounts)+1
+			restaurant.update({
+				viewCounts: totalViewCounts
+			})
 			return res.render('restaurant', {
 				restaurant: restaurant
 			})
@@ -74,11 +77,9 @@ const restController = {
 		return Restaurant.findByPk(req.params.id, {
 			include: [
 				Category,
-				//Comment
 				{ model: Comment, include: [Restaurant] }
 			]
 		}).then(restaurant => {
-			//console.log(restaurant.Comments[0].dataValues)
 			return res.render('restDashboard', {
 				restaurant: restaurant
 			})
