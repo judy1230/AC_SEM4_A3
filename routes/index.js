@@ -23,9 +23,11 @@ module.exports = (app, passport) => {
 	}
 	//get in login page
 	app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
+	//user controller
 	app.get('/restaurants', authenticated, restController.getRestaurants)
 	app.get('/restaurants/feeds', authenticated, restController.getFeeds)
 	app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+	app.get('/restaurants/:id/dashboard', authenticated, restController.getResDashboard)
 	app.post('/comments', authenticated, commentController.postComment)
 	app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
