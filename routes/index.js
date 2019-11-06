@@ -34,10 +34,12 @@ module.exports = (app, passport) => {
 	app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
 	app.post('/like/:restaurantId', authenticated, userController.addLike)
 	app.delete('/like/:restaurantId', authenticated, userController.removeLike)
+	app.get('/users/top', authenticated, userController.getToUser)
 	//user profile
+	app.put('/users/:id', authenticated, userController.putUser)
 	app.get('/users/:id', authenticated, userController.getUser )
 	app.get('/users/:id/edit', authenticated, userController.editUser)
-	app.put('/users/:id', authenticated, userController.putUser)
+
 
 	//get in admin
 	app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
