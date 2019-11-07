@@ -5,7 +5,7 @@
 		<div class="col-md-6">
 			<h3>{{user.name}}</h3>
 			<p>{{user.email}}</p>
-			<p class="">{{user.Comments.length}}個已評論的餐廳</p>
+			<p class="">{{userCommentsRest.length}}個已評論的餐廳</p>
 			<p class="">{{user.FavoritedRestaurants.length}}個收藏的餐廳</p>
 			<p class="">{{user.Followings.length}}followings(追蹤者)</p>
 			<p class="">{{user.Followers.length}}followers(追隨者)</p>
@@ -15,10 +15,10 @@
 
 <blockquote class="blockquote p-5">
 	<div class="row">
-		{{#if user.Comments}}
+		{{#if userCommentsRest}}
 		<div class='col-6'>
-			<p class="">{{user.Comments.length}}個已評論的餐廳</p>
-			{{#each user.Comments }}
+			<p class="">{{userCommentsRest.length}}個已評論的餐廳</p>
+			{{#each userCommentsRest }}
 			<a href="/restaurants/{{this.Restaurant.id}}"><img class="img-responsive center-block mr-3"
 					src="{{this.Restaurant.image}}" style="width:70px;margin-bottom: 25px;"></a>
 			{{/each}}

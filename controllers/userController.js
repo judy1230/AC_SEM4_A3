@@ -53,17 +53,24 @@ let userController = {
 		User.findByPk(res.locals.user.id, {
 			include: [
 				{ model: Comment, include: [Restaurant] },
-				{ model: Restaurant, as:'FavoritedRestaurants' },
+				{ model: Restaurant, as: 'FavoritedRestaurants' },
 				{ model: User, as: 'Followers' },
 				{ model: User, as: 'Followings' },
 			]
 		}).then(user => {
-			console.log('user.Followings', user.Followings)
+			let index
+			userCommentsRest = user.Comments.filter(
+				(d) => {
+					if (index !== d.dataValues.RestaurantId) {
+						index = d.dataValues.RestaurantId
+						return Restaurant.findByPk(index)
+					}
+				})
 			return res.render('profile', {
-				user: user
+				user: user,
+				userCommentsRest: userCommentsRest
 			})
 		})
-
 	},
 	editUser: (req, res) => {
 		return User.findByPk(req.params.id)
