@@ -3,18 +3,18 @@
 			<img class="img-responsive center-block" src="{{user.image}}" style="width: 250px;margin-bottom: 25px;">
 		</div>
 		<div class="col-md-6">
-			<h3>{{user.name}}</h3>
-			<p>{{user.email}}</p>
-			{{#ifUserEdit user.id localUser.id }}
+			<h3>{{inUser.name}}</h3>
+			<p>{{inUser.email}}</p>
+			{{#ifCond user.id inUser.id }}
 			<a href="/users/{{user.id}}/edit"><button class="btn btn-outline-success my-2 my-sm-0">Edit</button></a>
-			{{/ifUserEdit}}
+			{{/ifCond}}
 		</div>
 </div>
 
-{{#if user.Comments}}
+{{#if inUser.Comments}}
 <blockquote class="blockquote m-auto p-2"></blockquote>
-<p class="">{{user.Comments.length}}個已評論的餐廳</p>
-{{#each user.Comments}}
+<p class="">{{inUser.Comments.length}}個已評論的餐廳</p>
+{{#each inUser.Comments}}
 	<a href="/restaurants/{{this.Restaurant.id}}"><img class="img-responsive center-block mr-3" src="{{this.Restaurant.image}}" style="width:70px;margin-bottom: 25px;"></a>
 	{{/each}}
 </blockquote>

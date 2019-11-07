@@ -50,13 +50,13 @@ let userController = {
 		res.redirect('/signin')
 	},
 	getUser: (req, res) => {
-		localUser = User.findByPk((res.locals.user.id), {
+		User.findByPk(res.locals.user.id, {
 			include: [
 				{ model: Comment, include: [Restaurant] }
 			]
-		}).then(localUser => {
+		}).then(user => {
 			return res.render('profile', {
-				localUser: localUser
+				user: user
 			})
 		})
 
@@ -147,19 +147,19 @@ let userController = {
 	},
 	getTopUser: async (req, res) => {
 		try {
-			user = await User.findByPk(req.params.id, {
+			inUser = await User.findByPk(req.params.id, {
 				include: [
 					{ model: Comment, include: [Restaurant] }
 				]
 			})
-			localUser = await User.findByPk(res.locals.user.id, {
+			user = await User.findByPk(res.locals.user.id, {
 				include: [
 					{ model: Comment, include: [Restaurant] }
 				]
 			})
 			res.render('profile', {
 				user: user,
-				localUser: localUser
+				inUser: inUser
 			})
 		} catch (err) {
 			return console.log(err)
