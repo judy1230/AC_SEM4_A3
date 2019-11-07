@@ -55,7 +55,7 @@ let userController = {
 			]
 		}).then(user => {
 			return res.render('profile', {
-				user: user
+				user: user,
 			})
 		})
 	},
@@ -125,7 +125,6 @@ let userController = {
 	},
 	getToUser: (req, res) => {
 		return User.findAll({
-			//order: ['id', 'ASC'],
 			include: [
 				{model: User, as: 'Followers'}
 			]
