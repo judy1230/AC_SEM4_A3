@@ -7,7 +7,7 @@ module.exports = {
 		}
 		return options.inverse(this)
 	},
-	ifEdit: function (a, b, options) {
+	ifUserEdit: function (a, b, options) {
 		if (a === b) {
 			return options.fn(this)
 		}

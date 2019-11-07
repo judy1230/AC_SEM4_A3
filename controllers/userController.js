@@ -7,6 +7,7 @@ const Favorite = db.Favorite
 const Like = db.Like
 const Followship = db.Followship
 
+
 let userController = {
 	signUpPage: (req, res) => {
 		return res.render('signup')
@@ -49,15 +50,16 @@ let userController = {
 		res.redirect('/signin')
 	},
 	getUser: (req, res) => {
-		User.findByPk(req.params.id, {
+		localUser = User.findByPk((res.locals.user.id), {
 			include: [
-				{model: Comment, include:[Restaurant]}
+				{ model: Comment, include: [Restaurant] }
 			]
-		}).then(user => {
+		}).then(localUser => {
 			return res.render('profile', {
-				user: user,
+				localUser: localUser
 			})
 		})
+
 	},
 	editUser: (req, res) => {
 		return User.findByPk(req.params.id)
@@ -69,14 +71,14 @@ let userController = {
 	},
 	putUser: (req, res) => {
 
-		return User.findByPk(req.params.id).then(user =>{
+		return User.findByPk(req.params.id).then(user => {
 			user.update({
 				name: req.body.name,
 				email: req.body.email,
 				image: req.body.image
 			})
-				req.flash('success_msg', `${user.name} is successfully updated`)
-				return res.redirect(`/users/${user.id}`)
+			req.flash('success_msg', `${user.name} is successfully updated`)
+			return res.redirect(`/users/${user.id}`)
 		})
 	},
 	addFavorite: (req, res) => {
@@ -93,7 +95,8 @@ let userController = {
 			where: {
 				UserId: req.user.id,
 				RestaurantId: req.params.restaurantId
-		}})
+			}
+		})
 			.then((favorite) => {
 				favorite.destroy()
 					.then((restaurant) => {
@@ -123,10 +126,11 @@ let userController = {
 				})
 		})
 	},
-	getToUser: (req, res) => {
+	getTopUsers: (req, res) => {
+
 		return User.findAll({
 			include: [
-				{model: User, as: 'Followers'}
+				{ model: User, as: 'Followers' }
 			]
 		}).then(users => {
 			users = users.map(user => ({
@@ -138,8 +142,28 @@ let userController = {
 			}))
 			//依追蹤者人數排列清單
 			users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-			return res.render('topUser', {users:users})
+			return res.render('topUser', { users: users })
 		})
+	},
+	getTopUser: async (req, res) => {
+		try {
+			user = await User.findByPk(req.params.id, {
+				include: [
+					{ model: Comment, include: [Restaurant] }
+				]
+			})
+			localUser = await User.findByPk(res.locals.user.id, {
+				include: [
+					{ model: Comment, include: [Restaurant] }
+				]
+			})
+			res.render('profile', {
+				user: user,
+				localUser: localUser
+			})
+		} catch (err) {
+			return console.log(err)
+		}
 	},
 	addFollowing: (req, res) => {
 		return Followship.create({
