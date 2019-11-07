@@ -41,7 +41,7 @@ module.exports = (app, passport) => {
 
 	//user profile
 	app.get('/users/top', authenticated, userController.getTopUsers)
-	app.get('/users/top/:id', authenticated, userController.getTopUser)
+	app.get('/users/top/:id', authenticated, userController.getUserProfile)
 	app.put('/users/:id', authenticated, userController.putUser)
 	app.get('/users/:id', authenticated, userController.getUser )
 	app.get('/users/:id/edit', authenticated, userController.editUser)

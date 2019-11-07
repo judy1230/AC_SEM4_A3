@@ -52,9 +52,13 @@ let userController = {
 	getUser: (req, res) => {
 		User.findByPk(res.locals.user.id, {
 			include: [
-				{ model: Comment, include: [Restaurant] }
+				{ model: Comment, include: [Restaurant] },
+				{ model: Restaurant, as:'FavoritedRestaurants' },
+				{ model: User, as: 'Followers' },
+				{ model: User, as: 'Followings' },
 			]
 		}).then(user => {
+			console.log('user.Followings', user.Followings)
 			return res.render('profile', {
 				user: user
 			})
@@ -145,19 +149,18 @@ let userController = {
 			return res.render('topUser', { users: users })
 		})
 	},
-	getTopUser: async (req, res) => {
+	getUserProfile: async (req, res) => {
 		try {
 			inUser = await User.findByPk(req.params.id, {
 				include: [
-					{ model: Comment, include: [Restaurant] }
+					{ model: Comment, include: [Restaurant] },
+					{ model: Restaurant, as: 'FavoritedRestaurants' },
+					{ model: User, as: 'Followers' },
+					{ model: User, as: 'Followings' },
 				]
 			})
-			user = await User.findByPk(res.locals.user.id, {
-				include: [
-					{ model: Comment, include: [Restaurant] }
-				]
-			})
-			res.render('profile', {
+			user = await User.findByPk(res.locals.user.id)
+			res.render('userProfile', {
 				user: user,
 				inUser: inUser
 			})
