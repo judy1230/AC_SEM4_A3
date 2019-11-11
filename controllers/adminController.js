@@ -14,12 +14,15 @@ const adminController = {
 		})
 	},
 	getRestaurant: (req, res) => {
-		console.log('res req.params.id', req.params.id)
-		return Restaurant.findByPk(req.params.id, {include:[Category]}).then(restaurant => {
-			return res.render('admin/restaurant', {
-				restaurant: restaurant
-			})
+		adminService.getRestaurant(req, res, (data) => {
+			return res.render('admin/restaurant', data)
 		})
+		// console.log('res req.params.id', req.params.id)
+		// return Restaurant.findByPk(req.params.id, {include:[Category]}).then(restaurant => {
+		// 	return res.render('admin/restaurant', {
+		// 		restaurant: restaurant
+		// 	})
+		// })
 	},
 	createRestaurant: (req, res) => {
 		Category.findAll().then(categories => {

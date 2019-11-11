@@ -57,7 +57,8 @@ const passport = require('../config/passport')
 	//get in admin
 	//router.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
 
-	router.get('/api/admin/restaurants', adminController.getRestaurants)
+  router.get('/api/admin/restaurants', adminController.getRestaurants)
+  router.get('/api/admin/restaurant/:id', adminController.getRestaurant)
   //router.get('/api/admin/categories', adminController.getCategories)
 
 	//admin config
