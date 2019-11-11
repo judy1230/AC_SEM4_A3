@@ -59,7 +59,7 @@ const passport = require('../config/passport')
 
   router.get('/api/admin/restaurants', adminController.getRestaurants)
   router.get('/api/admin/restaurant/:id', adminController.getRestaurant)
-  //router.get('/api/admin/categories', adminController.getCategories)
+  router.get('/api/admin/categories', categoryController.getCategories)
 
 	//admin config
 	//categories
