@@ -38,6 +38,6 @@ app.listen(port, () => {
 	console.log(`Example app listening on port ${port}!`)
 })
 //把 passport 傳入routes
-require('./routes')(app, passport)
-
+//require('./routes')(app, passport)
+require('./routes')(app)
 app.use('/upload', express.static(__dirname + '/upload'))
