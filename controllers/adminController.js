@@ -51,8 +51,9 @@ const adminController = {
 		adminService.putRestaurant(req, res, (data) => {
 			if (data['status'] === 'error') {
 				req.flash('error_msg', data['message'])
+				return res.redirect('back')
 			}
-			req.flash('sueccess_msg', data['message'])
+			req.flash('success_msg', data['message'])
 			res.redirect('/admin/restaurants')
 		})
 

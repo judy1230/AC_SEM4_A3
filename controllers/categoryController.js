@@ -3,25 +3,26 @@ const Category = db.Category
 const categoryService = require('./services/categoryService.js')
 
 const categoryController = {
-	getCategories: (req, res) => {
-		categoryService.getCategories(req, res, (data) => {
-			return res.render('admin/categories', data)
-		})
-		// return Category.findAll().then(categories => {
-		// 	return res.render('admin/categories', {
-		// 		categories: categories
-		// 	})
-		// })
-	},
+	// getCategories: (req, res) => {
+	// 	categoryService.getCategories(req, res, (data) => {
+	// 		return res.render('admin/categories', data)
+	// 	})
+	// 	// return Category.findAll().then(categories => {
+	// 	// 	return res.render('admin/categories', {
+	// 	// 		categories: categories
+	// 	// 	})
+	// 	// })
+	// },
 	postCategories: (req, res) => {
 		categoryService.postCategories(req, res, (data) => {
 			if (data['status'] === 'error') {
 				req.flash('error_msg', data['message'])
+				return res.redirect('back')
 			}
 			req.flash('success_msg', data['message'])
-			return res.render('/admin/categories')
+			res.redirect('/admin/categories')
 		})
-	
+
 	},
 	getCategories: (req, res) => {
 		return Category.findAll().then(categories => {
@@ -36,27 +37,21 @@ const categoryController = {
 		})
 	},
 	putCategory: (req, res) => {
-		if (!req.body.name) {
-			req.flash('error_messages', 'name didn\'t exist')
-			return res.redirect('back')
-		} else {
-			return Category.findByPk(req.params.id)
-				.then((category) => {
-					category.update(req.body)
-						.then((category) => {
-							res.redirect('/admin/categories')
-						})
-				})
-		}
+		categoryService.putCategory(req, res, (data) => {
+			if (data['status'] === 'error') {
+				req.flash('error_msg', data['message'])
+				return res.redirect('back')
+			}
+			req.flash('success_msg', data['message'])
+			res.redirect('/admin/categories')
+		})
 	},
 	deleteCategory: (req, res) => {
-		return Category.findByPk(req.params.id)
-			.then((category) => {
-				category.destroy()
-					.then((category) => {
-						res.redirect('/admin/categories')
-					})
-			})
+		categoryService.deleteCategory(req, res, (data) => {
+			if (data['status'] === 'success') {
+				return res.redirect('/admin/categories')
+			}
+		})
 	}
 
 }
