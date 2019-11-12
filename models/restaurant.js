@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     opening_hours: DataTypes.STRING,
     description: DataTypes.TEXT,
     image: DataTypes.STRING,
-    viewCounts: DataTypes.STRING
+    viewCounts: DataTypes.STRING,
+    //CategoryId: DataTypes.STRING
   }, {});
   Restaurant.associate = function(models) {
     // associations can be defined here

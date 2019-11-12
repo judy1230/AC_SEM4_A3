@@ -17,6 +17,7 @@ app.engine('handlebars', handlebars({
 app.set('view engine', 'handlebars')
 //setup bodyParser
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 //setup session
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 //setup passport
