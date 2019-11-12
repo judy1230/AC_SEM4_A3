@@ -17,12 +17,6 @@ const adminController = {
 		adminService.getRestaurant(req, res, (data) => {
 			return res.render('admin/restaurant', data)
 		})
-		// console.log('res req.params.id', req.params.id)
-		// return Restaurant.findByPk(req.params.id, {include:[Category]}).then(restaurant => {
-		// 	return res.render('admin/restaurant', {
-		// 		restaurant: restaurant
-		// 	})
-		// })
 	},
 	createRestaurant: (req, res) => {
 		Category.findAll().then(categories => {
@@ -131,13 +125,12 @@ const adminController = {
 
 	},
 	deleteRestaurant: (req, res) => {
-		return Restaurant.findByPk(req.params.id)
-			.then((restaurant) => {
-				restaurant.destroy()
-					.then((restaurant) => {
-						res.redirect('/admin/restaurants')
-					})
-			})
+		adminService.deleteRestaurant(req, res, (data) => {
+			if (data['status'] === 'success') {
+				return res.redirect('/admin/restaurants')
+			}
+
+		})
 	},
 	editUsers: (req, res) => {
 		return User.findAll({
