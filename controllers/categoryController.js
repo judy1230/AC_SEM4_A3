@@ -13,17 +13,6 @@ const categoryController = {
 	// 	// 	})
 	// 	// })
 	// },
-	postCategories: (req, res) => {
-		categoryService.postCategories(req, res, (data) => {
-			if (data['status'] === 'error') {
-				req.flash('error_msg', data['message'])
-				return res.redirect('back')
-			}
-			req.flash('success_msg', data['message'])
-			res.redirect('/admin/categories')
-		})
-
-	},
 	getCategories: (req, res) => {
 		return Category.findAll().then(categories => {
 			if (req.params.id) {
@@ -36,6 +25,18 @@ const categoryController = {
 			}
 		})
 	},
+	postCategories: (req, res) => {
+		categoryService.postCategories(req, res, (data) => {
+			if (data['status'] === 'error') {
+				req.flash('error_msg', data['message'])
+				return res.redirect('back')
+			}
+			req.flash('success_msg', data['message'])
+			res.redirect('/admin/categories')
+		})
+
+	},
+
 	putCategory: (req, res) => {
 		categoryService.putCategory(req, res, (data) => {
 			if (data['status'] === 'error') {
